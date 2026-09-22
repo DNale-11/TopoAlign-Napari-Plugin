@@ -1,14 +1,12 @@
 # TopoAlign napari 插件
 
-[English](README.md) · [详细使用说明](docs/usage.md) · [下载安装包](https://github.com/DNale-11/TopoAlign-Napari-Plugin/releases)
+[English](README.md) · [使用说明](docs/usage.md) · [下载安装包](https://github.com/DNale-11/TopoAlign-Napari-Plugin/releases)
 
-这是从 [TopoAlign 主项目](https://github.com/DNale-11/cell_registration) 整理出来的独立 napari 插件，支持 Cellpose-SAM 细胞核分割、手动分割、掩膜保存、形态与拓扑匹配，以及普通图像、FISH 和 WSI 配准。
-
-安装包名保留为 `napari-cell-registration`，Python 导入名为 `napari_cell_registration`，napari 菜单名称为 **TopoAlign**。
+支持 Cellpose-SAM 细胞分割、手动掩膜编辑、拓扑引导的细胞匹配与图像配准，适用于普通显微图像、FISH 和 WSI。
 
 ## 安装
 
-本版本使用 **Python 3.10 / 3.11、napari 0.6.x 和 NumPy 1.x**。建议新建环境：
+使用 Python 3.10–3.11，依赖 napari 0.6.x 和 NumPy 1.x。
 
 ```bash
 conda create -n topoalign-napari python=3.11 -y
@@ -19,41 +17,15 @@ python -m pip install ".[gui]"
 napari
 ```
 
-`gui` 会安装 PyQt5；已有 napari 和 Qt 环境时可执行 `python -m pip install .`。私有仓库需要对应 GitHub 访问权限。也可以下载 Release 中的 wheel，在下载目录执行：
+使用 GPU 时，请先安装匹配的 [PyTorch](https://pytorch.org/get-started/previous-versions/#v271)。Windows 限定 PyTorch 2.7.x / torchvision 0.22.x。Cellpose 首次运行会下载模型。
 
-```bash
-python -m pip install "napari_cell_registration-0.1.0-py3-none-any.whl[gui]"
-```
-
-如需 NVIDIA GPU，请先按 [PyTorch 官方说明](https://pytorch.org/get-started/locally/) 安装适合本机的 PyTorch，再安装插件。执行 `python -c "import torch; print(torch.cuda.is_available())"` 检查 GPU。Cellpose 首次运行会下载模型；已有掩膜可直接配准。
-
-Windows 上限定使用 **PyTorch 2.7.x / torchvision 0.22.x**，以避免本次 CI 中新版 PyTorch 与 Qt 一起加载时出现的 `c10.dll` 初始化失败。CPU 或 CUDA 的具体安装命令见 [PyTorch 2.7.1 官方说明](https://pytorch.org/get-started/previous-versions/#v271)。自动检查使用 2.7.1 / 0.22.1 的 CPU 版本。
-
-## 基本操作
+## 使用
 
 1. 在 napari 中载入固定图像和移动图像。
-2. 从 **Plugins → TopoAlign → Cell Segmentation (Cellpose)** 生成掩膜，或载入已有 Labels 图层。
-3. 打开 **Registration Workflow**，选择对应图像与掩膜，并选择 `auto`、`normal`、`fish - contour + topology` 或 `wsi` 模式。
-4. 检查匹配点和配准图层，勾选 `save_results` 并设置 `output_dir` 保存结果。
+2. 打开 **Plugins → TopoAlign** 分割细胞，或将已有实例掩膜载入为 Labels 图层。
+3. 打开 **Registration Workflow**，选择图像和掩膜后运行配准。
+4. 勾选 `save_results`，设置 `output_dir` 保存结果。
 
-实例掩膜中 `0` 代表背景，每个细胞使用独立的正整数标签。可使用 **Manual Segmentation** 制作或编辑掩膜，使用 **Save Mask Layers** 导出 TIFF。大图分块设置与 WSI 坐标要求见[详细使用说明](docs/usage.md)。
+WSI 功能需执行 `python -m pip install ".[gui,wsi]"` 并安装 OpenSlide 原生库；CellViT++ 需另行配置 GPU 环境和模型权重。详见[使用说明](docs/usage.md)。
 
-## WSI 可选功能
-
-执行 `python -m pip install ".[gui,wsi]"` 安装 OpenSlide Python 绑定，并按 [OpenSlide 文档](https://openslide.org/api/python/) 安装原生库。
-
-CellViT++、pathopatch、GPU 环境和模型权重需要另行准备，`wsi` 扩展不会自动安装它们。插件内置兼容处理依赖这些项目的内部接口，应先验证版本兼容性。普通图像和已有掩膜配准不需要 CellViT++。
-
-## 开发与发布
-
-```bash
-python -m pip install ".[gui,dev]"
-python -m pytest -q
-python -m npe2 validate src/napari_cell_registration/napari.yaml --imports
-python -m build
-python -m twine check dist/*
-```
-
-自动检查使用合成数据验证插件发现、窗口创建和核心配准，不下载模型；未覆盖 GPU 模型推理或真实 WSI 全流程。推送 `v*` 标签后，工作流在检查通过后向 GitHub Release 上传 wheel 与源码包，不会自动发布到 PyPI 或 napari 插件索引。
-
-许可证：[BSD-3-Clause](LICENSE)。本仓库不包含实验图像、模型权重或分析输出。
+[BSD-3-Clause](LICENSE) · 安装包名：`napari-cell-registration`
