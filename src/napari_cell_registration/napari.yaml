@@ -1,0 +1,50 @@
+name: napari-cell-registration
+display_name: TopoAlign
+contributions:
+  commands:
+    # Automated segmentation command
+    - id: napari-cell-registration.segment_cells
+      title: Segment cells with Cellpose-SAM
+      python_name: napari_cell_registration._widget:segment_cells_factory
+
+    # Save existing mask layers after segmentation
+    - id: napari-cell-registration.save_mask_layers
+      title: Save Mask Layers
+      python_name: napari_cell_registration._widget:save_mask_layers_factory
+    
+    # Manual segmentation command
+    - id: napari-cell-registration.manual_segmentation
+      title: Manual Cell Segmentation
+      python_name: napari_cell_registration._manual_seg_widget:ManualSegmentationWidget
+    
+    # Full registration workflow command
+    - id: napari-cell-registration.registration_workflow
+      title: Cell Registration Workflow
+      python_name: napari_cell_registration._widget:registration_workflow_widget
+
+    # OpenSlide + CellViT++ WSI segmentation command
+    - id: napari-cell-registration.wsi_segmentation
+      title: WSI Segmentation
+      python_name: napari_cell_registration._wsi_widget:wsi_segmentation_factory
+  
+  widgets:
+    # Automated segmentation widget
+    - command: napari-cell-registration.segment_cells
+      display_name: Cell Segmentation (Cellpose)
+
+    # Save existing mask layers
+    - command: napari-cell-registration.save_mask_layers
+      display_name: Save Mask Layers
+    
+    # Manual segmentation widget
+    - command: napari-cell-registration.manual_segmentation
+      display_name: Manual Segmentation
+    
+    # Full registration workflow widget
+    - command: napari-cell-registration.registration_workflow
+      display_name: Registration Workflow
+      autogenerate: true
+
+    # OpenSlide + CellViT++ WSI segmentation widget
+    - command: napari-cell-registration.wsi_segmentation
+      display_name: WSI Segmentation

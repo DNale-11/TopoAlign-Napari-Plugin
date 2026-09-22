@@ -1,0 +1,24 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+build/
+dist/
+.coverage
+htmlcov/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+# Local images, model weights, and generated results
+*.tif
+*.tiff
+*.svs
+*.qptiff
+*.ndpi
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*_output/
