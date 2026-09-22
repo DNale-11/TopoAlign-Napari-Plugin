@@ -28,8 +28,10 @@ dependencies = [
     "imageio>=2.31,<3.0",
     "tifffile>=2023.7,<2025.0",
     "opencv-python-headless>=4.8,<4.12",
-    # torch is required by cellpose, but version should match user's CUDA/GPU
-    # Don't constrain - let user install appropriate version for their hardware
+    # Newer Windows torch wheels can fail to load c10.dll after Qt imports.
+    # 2.7.1 supports both CPU and CUDA builds; leave other platforms unconstrained.
+    "torch>=2.7.1,<2.8; sys_platform == 'win32'",
+    "torchvision>=0.22.1,<0.23; sys_platform == 'win32'",
     "numba>=0.56,<0.63",
     "llvmlite>=0.39,<0.46",
     "natsort>=8.0,<9.0",

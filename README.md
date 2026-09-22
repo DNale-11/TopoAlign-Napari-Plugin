@@ -50,6 +50,12 @@ installing this plugin. Verify it with:
 python -c "import torch; print(torch.cuda.is_available())"
 ```
 
+On Windows this release requires PyTorch 2.7.x and torchvision 0.22.x: newer
+Windows wheels failed to initialize `c10.dll` when loaded with Qt in our CI.
+Use the [PyTorch 2.7.1 installation commands](https://pytorch.org/get-started/previous-versions/#v271)
+to select a CPU or compatible CUDA build. CI uses `torch==2.7.1` and
+`torchvision==0.22.1` CPU wheels.
+
 Cellpose downloads model weights on first use. Existing masks can be used for
 registration without running segmentation. This repository does not include
 microscopy datasets or model weights.

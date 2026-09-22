@@ -27,6 +27,8 @@ python -m pip install "napari_cell_registration-0.1.0-py3-none-any.whl[gui]"
 
 如需 NVIDIA GPU，请先按 [PyTorch 官方说明](https://pytorch.org/get-started/locally/) 安装适合本机的 PyTorch，再安装插件。执行 `python -c "import torch; print(torch.cuda.is_available())"` 检查 GPU。Cellpose 首次运行会下载模型；已有掩膜可直接配准。
 
+Windows 上限定使用 **PyTorch 2.7.x / torchvision 0.22.x**，以避免本次 CI 中新版 PyTorch 与 Qt 一起加载时出现的 `c10.dll` 初始化失败。CPU 或 CUDA 的具体安装命令见 [PyTorch 2.7.1 官方说明](https://pytorch.org/get-started/previous-versions/#v271)。自动检查使用 2.7.1 / 0.22.1 的 CPU 版本。
+
 ## 基本操作
 
 1. 在 napari 中载入固定图像和移动图像。

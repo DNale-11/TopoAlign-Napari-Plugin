@@ -13,6 +13,8 @@
   instead of its bound napari viewer.
 - Uses Python 3.10–3.11, napari 0.6.x, and NumPy 1.x. OpenCV is capped below
   4.12 to avoid requiring NumPy 2.
+- Restricts Windows to PyTorch 2.7.x / torchvision 0.22.x after the latest
+  Windows CPU wheels failed to initialize `c10.dll` alongside Qt in clean CI.
 
 Source: `DNale-11/cell_registration`, base commit `786aeb0`, plus the local
 plugin changes present at extraction on 2026-09-22 (including FISH registration).
